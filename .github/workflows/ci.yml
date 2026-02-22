@@ -1,0 +1,38 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+
+jobs:
+  build-lint-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      # (Optional) Cache Docker layers for faster builds
+      - name: Cache Docker layers
+        uses: actions/cache@v4
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
+
+      - name: Build Docker image (compose)
+        run: |
+          docker compose -f docker/docker-compose.yml build
+
+      - name: Lint (inside Docker)
+        run: |
+          ci/run_in_docker.sh "cd /workspace && ./scripts/lint.sh"
+
+      - name: Test (colcon build + test inside Docker)
+        run: |
+          ci/colcon_build_test.sh

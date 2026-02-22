@@ -1,0 +1,65 @@
+[project]
+name = "my-robot-project"
+version = "0.1.0"
+requires-python = ">=3.10"
+# No dependencies listed here because ROS2 Python packages typically manage deps via package.xml
+# and system/rosdep. Keep this minimal.
+
+[tool.black]
+line-length = 100
+target-version = ["py310"]
+skip-string-normalization = false
+# If you have generated files in install/build/log folders, ignore them:
+extend-exclude = '''
+(
+  ^robot_ws/build/
+| ^robot_ws/install/
+| ^robot_ws/log/
+| ^\.venv/
+| ^\.conda/
+)
+'''
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+# Match Black's formatting choices
+respect-gitignore = true
+
+# Don't lint generated / build outputs
+exclude = [
+  "robot_ws/build",
+  "robot_ws/install",
+  "robot_ws/log",
+  ".venv",
+  ".conda",
+]
+
+[tool.ruff.lint]
+# A clean, practical ruleset:
+# - E/F: pycodestyle errors + pyflakes
+# - I: import sorting
+# - B: flake8-bugbear (good real-world checks)
+# - UP: pyupgrade
+# - SIM: simplifications
+# - RUF: ruff-specific rules
+select = ["E", "F", "I", "B", "UP", "SIM", "RUF"]
+
+# Let Black handle line wrapping; avoid fighting it
+ignore = ["E203", "E501"]
+
+# If you use ROS2 logs with f-strings, this can be useful to keep:
+# (No extra config needed; kept minimal.)
+
+[tool.ruff.lint.isort]
+combine-as-imports = true
+force-sort-within-sections = true
+known-first-party = ["my_robot_project"]
+# If you have ROS2 Python packages with different top-level names, add them here.
+
+[tool.ruff.format]
+# Use Ruff's formatter (fast, Black-compatible). If you prefer Black only, you can omit this.
+quote-style = "double"
+indent-style = "space"
+line-ending = "lf"
+docstring-code-format = true

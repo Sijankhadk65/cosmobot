@@ -1,0 +1,80 @@
+# ROS2-friendly C++ formatting
+# Place this file at the repository root as: .clang-format
+BasedOnStyle: LLVM
+
+# Indentation / layout
+IndentWidth: 4
+TabWidth: 4
+UseTab: Never
+ContinuationIndentWidth: 8
+AccessModifierOffset: -2
+
+# Braces (common ROS2 style: braces on same line)
+BreakBeforeBraces: Attach
+BraceWrapping:
+  AfterClass: false
+  AfterControlStatement: false
+  AfterEnum: false
+  AfterFunction: false
+  AfterNamespace: false
+  AfterStruct: false
+  AfterUnion: false
+  BeforeCatch: false
+  BeforeElse: false
+  IndentBraces: false
+  SplitEmptyFunction: false
+  SplitEmptyRecord: false
+  SplitEmptyNamespace: false
+
+# Line length (ROS2 code tends to prefer 100-ish)
+ColumnLimit: 100
+
+# Pointer/reference alignment (common in modern C++ projects)
+PointerAlignment: Left
+ReferenceAlignment: Pointer
+
+# Includes
+SortIncludes: true
+IncludeBlocks: Regroup
+
+# Keep one statement per line unless very small
+AllowShortIfStatementsOnASingleLine: Never
+AllowShortLoopsOnASingleLine: false
+AllowShortFunctionsOnASingleLine: InlineOnly
+
+# Function/argument wrapping
+BinPackArguments: false
+BinPackParameters: false
+
+# Spaces
+SpaceBeforeParens: ControlStatements
+SpacesInParentheses: false
+SpacesInAngles: false
+SpaceBeforeAssignmentOperators: true
+
+# Namespaces
+NamespaceIndentation: All
+
+# Comments
+ReflowComments: true
+
+# Aligning (avoid overly “pretty” alignment diffs)
+AlignAfterOpenBracket: Align
+AlignConsecutiveAssignments: false
+AlignConsecutiveDeclarations: false
+AlignConsecutiveMacros: false
+AlignOperands: Align
+
+# Switch/case
+IndentCaseLabels: true
+
+# Better readability for initializer lists
+Cpp11BracedListStyle: true
+BreakConstructorInitializers: AfterColon
+ConstructorInitializerIndentWidth: 4
+
+# Prevents clang-format from touching special blocks if you need:
+# // clang-format off
+# ...
+# // clang-format on
+DisableFormat: false
