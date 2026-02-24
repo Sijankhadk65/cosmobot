@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="so101_arm">
+    <xacro:arg name="robot_name" default="so101_arm"/>
+    <xacro:arg name="add_world" default="true"/>
+    <xacro:arg name="base_link" default="base"/>
+    <xacro:arg name="prefix" default=""/>
+    <xacro:arg name="use_camera" default="true"/>
+    <xacro:arg name="use_gazebo" default="false"/>
+
+    <!-- Add world link if requested -->
+    <xacro:if value="$(arg add_world)">
+      <link name="world"/>
+      <joint name="$(arg prefix)virtual_joint" type="fixed">
+          <parent link="world"/>
+          <child link="$(arg prefix)$(arg base_link)"/>
+          <origin xyz="0 0 0" rpy="0 0 0"/>
+      </joint>
+    </xacro:if>
+
+    <!-- Include the robot arm definition -->
+    <xacro:include filename="$(find so_arm_description)/urdf/mech/so101_arm.urdf.xacro"/>
+
+    <!-- Instantiate the robot arm -->
+    <xacro:so101_arm prefix="$(arg prefix)" base_link="$(arg base_link)">
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+    </xacro:so101_arm>
+
+    <!-- Include Gazebo plugin -->
+    <xacro:include filename="$(find so_arm_description)/urdf/control/gazebo_sim_ros2_control.urdf.xacro" />
+    <xacro:load_gazebo_sim_ros2_control_plugin
+      robot_name="$(arg robot_name)"
+      use_gazebo="$(arg use_gazebo)"/>
+
+    <!-- Include ROS2 Control -->
+    <xacro:include filename="$(find so_arm_description)/urdf/control/so101_ros2_control.urdf.xacro" />
+    <xacro:so101_arm_ros2_control
+      name="RobotSystem"
+      use_gazebo="$(arg use_gazebo)"/>
+    
+
+    <xacro:include filename="$(find so_arm_description)/urdf/control/so101_ros2_control_hardware.urdf.xacro" />
+    <xacro:so101_arm_ros2_control
+      name="RobotSystem"
+      use_gazebo="$(arg use_gazebo)"/>
+
+
+    <!-- Include the Astra camera -->
+    <xacro:include filename="$(find so_arm_description)/urdf/sensors/astra_camera.urdf.xacro"/>
+
+</robot>

@@ -1,0 +1,329 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!-- SO101 Arm Macro -->
+  <xacro:macro name="so101_arm" params="prefix:='' base_link:=base *origin">
+
+    <!-- Robot Parameters -->
+    <xacro:property name="PI" value="3.14159265359"/>
+    <xacro:property name="effort_limit" value="10"/>
+    <xacro:property name="velocity_limit" value="10"/>
+    <xacro:property name="gazebo_control" value="$(arg use_gazebo)"/>
+    
+    <!-- Joint angle limits in radians -->
+    <xacro:property name="rotation_limit" value="1.91986"/>
+    <xacro:property name="pitch_limit" value="1.74533"/>
+    <xacro:property name="elbow_lower" value="-1.74533"/>
+    <xacro:property name="elbow_upper" value="1.5708"/>
+    <xacro:property name="wrist_pitch_limit" value="1.65806"/>
+    <xacro:property name="wrist_roll_limit" value="2.79253"/>
+    <xacro:property name="jaw_lower" value="-1.74533"/>
+    <xacro:property name="jaw_upper" value="1.74533"/>
+
+    <!-- Material Definitions -->
+    <xacro:macro name="material_3d_printed">
+      <material name="3d_printed">
+        <color rgba="1.0 0.82 0.12 1.0"/>
+      </material>
+    </xacro:macro>
+
+    <xacro:macro name="material_sts3215">
+      <material name="sts3215">
+        <color rgba="0.1 0.1 0.1 1.0"/>
+      </material>
+    </xacro:macro>
+
+    <!-- Instantiate materials -->
+    <xacro:material_3d_printed />
+    <xacro:material_sts3215/>
+
+    <!-- Mesh Visual/Collision Macro -->
+    <xacro:macro name="mesh_visual_collision" params="mesh_file origin_xyz origin_rpy material_name">
+      <visual>
+        <origin xyz="${origin_xyz}" rpy="${origin_rpy}"/>
+        <geometry>
+          <mesh filename="file://$(find so_arm_description)/meshes/${mesh_file}.stl"/>
+        </geometry>
+        <material name="${material_name}"/>
+      </visual>
+      <collision>
+        <origin xyz="${origin_xyz}" rpy="${origin_rpy}"/>
+        <geometry>
+          <mesh filename="file://$(find so_arm_description)/meshes/${mesh_file}.stl"/>
+        </geometry>
+      </collision>
+    </xacro:macro>
+
+    <!-- Joint Macro -->
+    <xacro:macro name="revolute_joint" params="name parent child origin_xyz origin_rpy axis_xyz lower upper">
+      <joint name="${prefix}${name}" type="revolute">
+        <origin xyz="${origin_xyz}" rpy="${origin_rpy}"/>
+        <parent link="${prefix}${parent}"/>
+        <child link="${prefix}${child}"/>
+        <axis xyz="${axis_xyz}"/>
+        <limit effort="${effort_limit}" velocity="${velocity_limit}" 
+               lower="${lower}" upper="${upper}"/>
+      </joint>
+    </xacro:macro>
+
+    <!-- Base Link -->
+    <link name="${prefix}${base_link}">
+      <xacro:insert_block name="origin"/>
+      <inertial>
+        <origin xyz="-0.00204287 0.020739 0.065966" rpy="0 0 1.5708"/>
+        <mass value="0.147"/>
+        <inertia ixx="0.0001" ixy="0" ixz="0" 
+                 iyy="0.0001" iyz="0" izz="0.0001"/>
+      </inertial>
+      
+      <!-- Base Motor Holder -->
+      <xacro:mesh_visual_collision 
+        mesh_file="base_motor_holder_so101_v1"
+        origin_xyz="-0.0221255 0.0206915 0.0300817"
+        origin_rpy="1.5708 -1.23909e-16 1.5708"
+        material_name="3d_printed"/>
+      
+      <!-- Base -->
+      <xacro:mesh_visual_collision 
+        mesh_file="base_so101_v2"
+        origin_xyz="-0.0221255 0.0207909 0.0300817"
+        origin_rpy="1.5708 0 1.5708"
+        material_name="3d_printed"/>
+      
+      <!-- Motor STS3215 -->
+      <xacro:mesh_visual_collision 
+        mesh_file="sts3215_03a_v1"
+        origin_xyz="0.0105745 0.0207909 0.0761817"
+        origin_rpy="-2.20282e-15 2.77556e-17 0"
+        material_name="sts3215"/>
+      
+      <!-- Waveshare Mounting Plate -->
+      <xacro:mesh_visual_collision 
+        mesh_file="waveshare_mounting_plate_so101_v2"
+        origin_xyz="-0.0467435 0.0205915 0.0798817"
+        origin_rpy="1.5708 -1.21716e-14 1.5708"
+        material_name="3d_printed"/>
+    </link>
+
+    <!-- Shoulder Link -->
+    <link name="${prefix}shoulder">
+      <inertial>
+        <origin xyz="-0.0307604 -1.66727e-05 -0.0252713" rpy="0 0 0"/>
+        <mass value="0.100006"/>
+        <inertia ixx="0.0001" ixy="0" ixz="0" 
+                 iyy="0.0001" iyz="0" izz="0.0001"/>
+      </inertial>
+      
+      <!-- Motor STS3215 -->
+      <xacro:mesh_visual_collision 
+        mesh_file="sts3215_03a_v1"
+        origin_xyz="-0.0303992 0.000422241 -0.0417"
+        origin_rpy="1.5708 1.5708 0"
+        material_name="sts3215"/>
+      
+      <!-- Motor Holder -->
+      <xacro:mesh_visual_collision 
+        mesh_file="motor_holder_so101_base_v1"
+        origin_xyz="-0.0675992 -0.000177759 0.0158499"
+        origin_rpy="1.5708 -1.5708 0"
+        material_name="3d_printed"/>
+      
+      <!-- Rotation Pitch -->
+      <xacro:mesh_visual_collision 
+        mesh_file="rotation_pitch_so101_v1"
+        origin_xyz="0.0122008 2.22413e-05 0.0464"
+        origin_rpy="-1.5708 0 0"
+        material_name="3d_printed"/>
+    </link>
+
+    <!-- Upper Arm Link -->
+    <link name="${prefix}upper_arm">
+      <inertial>
+        <origin xyz="-0.0898471 -0.00838224 0.0184089" rpy="0 0 0"/>
+        <mass value="0.103"/>
+        <inertia ixx="0.0001" ixy="0" ixz="0" 
+                 iyy="0.0001" iyz="0" izz="0.0001"/>
+      </inertial>
+      
+      <!-- Motor STS3215 -->
+      <xacro:mesh_visual_collision 
+        mesh_file="sts3215_03a_v1"
+        origin_xyz="-0.11257 -0.0155 0.0187"
+        origin_rpy="-3.14159 -6.8695e-16 -1.5708"
+        material_name="sts3215"/>
+      
+      <!-- Upper Arm -->
+      <xacro:mesh_visual_collision 
+        mesh_file="upper_arm_so101_v1"
+        origin_xyz="-0.065085 0.012 0.0182"
+        origin_rpy="3.14159 -9.35612e-32 0"
+        material_name="3d_printed"/>
+    </link>
+
+    <!-- Lower Arm Link -->
+    <link name="${prefix}lower_arm">
+      <inertial>
+        <origin xyz="-0.0980701 0.00324376 0.0182831" rpy="0 0 0"/>
+        <mass value="0.104"/>
+        <inertia ixx="0.0001" ixy="0" ixz="0" 
+                 iyy="0.0001" iyz="0" izz="0.0001"/>
+      </inertial>
+      
+      <!-- Under Arm -->
+      <xacro:mesh_visual_collision 
+        mesh_file="under_arm_so101_v1"
+        origin_xyz="-0.0648499 -0.032 0.0182"
+        origin_rpy="-3.14159 0 3.9443e-31"
+        material_name="3d_printed"/>
+      
+      <!-- Motor Holder Wrist -->
+      <xacro:mesh_visual_collision 
+        mesh_file="motor_holder_so101_wrist_v1"
+        origin_xyz="-0.0648499 -0.032 0.018"
+        origin_rpy="-3.14159 4.73317e-30 7.88861e-31"
+        material_name="3d_printed"/>
+      
+      <!-- Motor STS3215 -->
+      <xacro:mesh_visual_collision 
+        mesh_file="sts3215_03a_v1"
+        origin_xyz="-0.1224 0.0052 0.0187"
+        origin_rpy="-3.14159 -3.58047e-15 -3.14159"
+        material_name="sts3215"/>
+    </link>
+
+    <!-- Wrist Link -->
+    <link name="${prefix}wrist">
+      <inertial>
+        <origin xyz="-0.000103312 -0.0386143 0.0281156" rpy="0 0 0"/>
+        <mass value="0.079"/>
+        <inertia ixx="0.0001" ixy="0" ixz="0" 
+                 iyy="0.0001" iyz="0" izz="0.0001"/>
+      </inertial>
+      
+      <!-- Motor STS3215 No Horn -->
+      <xacro:mesh_visual_collision 
+        mesh_file="sts3215_03a_no_horn_v1"
+        origin_xyz="5.55112e-17 -0.0424 0.0306"
+        origin_rpy="1.5708 1.5708 0"
+        material_name="sts3215"/>
+      
+      <!-- Wrist Roll Pitch -->
+      <xacro:mesh_visual_collision 
+        mesh_file="wrist_roll_pitch_so101_v2"
+        origin_xyz="0 -0.028 0.0181"
+        origin_rpy="-1.5708 -1.5708 0"
+        material_name="3d_printed"/>
+    </link>
+
+    <!-- Gripper Link -->
+    <link name="${prefix}gripper">
+      <inertial>
+        <origin xyz="0.000213627 0.000245138 -0.025187" rpy="0 0 0"/>
+        <mass value="0.087"/>
+        <inertia ixx="0.0001" ixy="0" ixz="0" 
+                 iyy="0.0001" iyz="0" izz="0.0001"/>
+      </inertial>
+      
+      <!-- Motor STS3215 -->
+      <xacro:mesh_visual_collision 
+        mesh_file="sts3215_03a_v1"
+        origin_xyz="0.0077 0.0001 -0.0234"
+        origin_rpy="-1.5708 -5.55112e-17 -1.38213e-14"
+        material_name="sts3215"/>
+      
+      <!-- Wrist Roll Follower -->
+      <xacro:mesh_visual_collision 
+        mesh_file="wrist_roll_follower_so101_v1"
+        origin_xyz="5.55112e-17 -0.000218214 0.000949706"
+        origin_rpy="-3.14159 -5.55112e-17 -9.17912e-24"
+        material_name="3d_printed"/>
+    </link>
+
+    <!-- Jaw Link -->
+    <link name="${prefix}jaw">
+      <inertial>
+        <origin xyz="-0.00157495 -0.0300244 0.0192755" rpy="0 0 0"/>
+        <mass value="0.012"/>
+        <inertia ixx="0.0001" ixy="0" ixz="0" 
+                 iyy="0.0001" iyz="0" izz="0.0001"/>
+      </inertial>
+      
+      <!-- Moving Jaw -->
+      <xacro:mesh_visual_collision 
+        mesh_file="moving_jaw_so101_v1"
+        origin_xyz="-5.55112e-17 -1.94746e-17 0.0189"
+        origin_rpy="9.53145e-17 -4.66093e-24 0"
+        material_name="3d_printed"/>
+    </link>
+
+    <!-- Joint Definitions -->
+    
+    <!-- Base to Shoulder -->
+    <xacro:revolute_joint 
+      name="Rotation" 
+      parent="${base_link}" 
+      child="shoulder"
+      origin_xyz="0.0230745 0.0207909 0.0948817"
+      origin_rpy="-3.14159 6.03684e-16 3.14159"
+      axis_xyz="0 0 1"
+      lower="-${rotation_limit}"
+      upper="${rotation_limit}"/>
+
+    <!-- Shoulder to Upper Arm -->
+    <xacro:revolute_joint 
+      name="Pitch" 
+      parent="shoulder" 
+      child="upper_arm"
+      origin_xyz="-0.0303992 -0.0182778 -0.0542"
+      origin_rpy="-1.5708 -1.5708 0"
+      axis_xyz="0 0 1"
+      lower="-${pitch_limit}"
+      upper="${pitch_limit}"/>
+
+    <!-- Upper Arm to Lower Arm -->
+    <xacro:revolute_joint 
+      name="Elbow" 
+      parent="upper_arm" 
+      child="lower_arm"
+      origin_xyz="-0.11257 -0.028 2.46331e-16"
+      origin_rpy="-1.22818e-15 5.75928e-16 1.5708"
+      axis_xyz="0 0 1"
+      lower="${elbow_lower}"
+      upper="${elbow_upper}"/>
+
+    <!-- Lower Arm to Wrist -->
+    <xacro:revolute_joint 
+      name="Wrist_Pitch" 
+      parent="lower_arm" 
+      child="wrist"
+      origin_xyz="-0.1349 0.0052 1.65232e-16"
+      origin_rpy="3.2474e-15 2.86219e-15 -1.5708"
+      axis_xyz="0 0 1"
+      lower="-${wrist_pitch_limit}"
+      upper="${wrist_pitch_limit}"/>
+
+    <!-- Wrist to Gripper -->
+    <xacro:revolute_joint 
+      name="Wrist_Roll" 
+      parent="wrist" 
+      child="gripper"
+      origin_xyz="0 -0.0611 0.0181"
+      origin_rpy="1.5708 -9.38083e-08 3.14159"
+      axis_xyz="0 0 1"
+      lower="-${wrist_roll_limit}"
+      upper="${wrist_roll_limit}"/>
+
+    <!-- Gripper to Jaw -->
+    <xacro:revolute_joint 
+      name="Jaw" 
+      parent="gripper" 
+      child="jaw"
+      origin_xyz="0.0202 0.0188 -0.0234"
+      origin_rpy="1.5708 -5.14108e-17 -1.38655e-14"
+      axis_xyz="0 0 1"
+      lower="${jaw_lower}"
+      upper="${jaw_upper}"/>
+
+  </xacro:macro>
+
+</robot>

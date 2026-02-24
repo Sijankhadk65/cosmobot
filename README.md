@@ -20,4 +20,7 @@
 > > ros2 pkg create "PACKAGE_NAME" --build-type ament_cmake / ament_python
 
 ### Running the bringup pacakage
-> > ros2 launch "PACKAGE_NAME" "LAUNCH_FILE"
+> > ros2 launch robot_bringup bringup.launch.py use_camera:=true use_perception:=true use_jsp_gui:=false
+
+### Generating rviz config
+Just save a config by only running 'rviz2' adding a 'tf' with the target frame as 'base'
