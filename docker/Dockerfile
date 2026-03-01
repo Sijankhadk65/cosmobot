@@ -64,6 +64,14 @@ RUN apt-get update && apt-get install -y \
   build-essential \
   && rm -rf /var/lib/apt/lists/*
 
+RUN apt-get update && apt-get install -y \
+  ros-jazzy-moveit \
+  ros-jazzy-moveit-visual-tools \
+  git \
+  cmake \
+  build-essential \
+  && rm -rf /var/lib/apt/lists/*
+
 # --- Orbbec/Astra udev rule ---
 # Vendor id for Orbbec/Astra devices is commonly 2bc5.
 # Note: host udev rules are still recommended; this helps in many setups and documents intent.

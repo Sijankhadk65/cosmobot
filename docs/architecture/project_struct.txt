@@ -1,0 +1,85 @@
+my_robot_project/
+├─ README.md
+├─ LICENSE
+├─ .gitignore
+├─ .editorconfig
+├─ .env.example
+
+├─ docker/
+│  ├─ Dockerfile
+│  ├─ docker-compose.yml
+│  ├─ entrypoint.sh
+│  └─ scripts/
+│     ├─ build.sh
+│     ├─ run.sh
+│     └─ exec.sh
+
+├─ env/
+│  ├─ conda/
+│  │  ├─ environment.yml
+│  │  └─ post_create.sh
+│  └─ requirements/
+│     ├─ base.txt
+│     ├─ dev.txt
+│     └─ runtime.txt
+
+├─ robot_ws/                       # ROS 2 workspace root
+│  ├─ src/                         # ONLY ROS packages go here
+│  │  ├─ interfaces/               # custom messages/services/actions
+│  │  │  └─ my_robot_interfaces/
+│  │  │     ├─ CMakeLists.txt
+│  │  │     ├─ package.xml
+│  │  │     └─ msg/ srv/ action/
+│  │  │
+│  │  ├─ drivers/                  # sensor + actuator drivers (thin)
+│  │  │  ├─ lidar_driver/
+│  │  │  ├─ camera_driver/
+│  │  │  └─ mmwave_driver/
+│  │  │
+│  │  ├─ perception/               # processing nodes (fusion, detection)
+│  │  │  ├─ human_proximity/
+│  │  │  └─ object_detection/
+│  │  │
+│  │  ├─ middleware/               # bridging, transforms, message routing
+│  │  │  ├─ tf_tools/
+│  │  │  └─ topic_relay/
+│  │  │
+│  │  ├─ control/                  # controllers, planners, safety logic
+│  │  │  └─ speed_scaler/
+│  │  │
+│  │  ├─ bringup/                  # launch + params to run the robot
+│  │  │  └─ my_robot_bringup/
+│  │  │     ├─ launch/
+│  │  │     ├─ config/
+│  │  │     ├─ rviz/
+│  │  │     └─ package.xml
+│  │  │
+│  │  └─ web/                      # optional future: websocket / web API
+│  │     └─ ros_websocket_bridge/
+│  │
+│  ├─ overlays/                    # optional: patches, vendor overlays
+│  ├─ tools/                       # colcon mixins, helper scripts
+│  └─ colcon.meta
+
+├─ config/                         # top-level configs (non-ROS)
+│  ├─ logging/
+│  └─ system/
+
+├─ scripts/                        # repo-level scripts (lint, format, CI)
+│  ├─ setup_dev.sh
+│  ├─ lint.sh
+│  ├─ format.sh
+│  └─ test.sh
+
+├─ ci/
+│  ├─ github/
+│  │  └─ workflows/
+│  └─ hooks/
+
+├─ docs/
+│  ├─ architecture/
+│  ├─ decisions/                   # ADRs
+│  └─ runbooks/
+
+└─ third_party/
+   └─ vendor_libs/
