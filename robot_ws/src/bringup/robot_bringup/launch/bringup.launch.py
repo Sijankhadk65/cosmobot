@@ -1,9 +1,10 @@
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument
+from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
 from launch.conditions import IfCondition
 from launch.substitutions import LaunchConfiguration, PathJoinSubstitution, Command, TextSubstitution
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
+from launch.launch_description_sources import AnyLaunchDescriptionSource
 
 
 def generate_launch_description():
@@ -89,18 +90,15 @@ def generate_launch_description():
         }],
     )
 
-    # ---- Optional runtime nodes (placeholders for now) ----
-    camera_node = Node(
+    astra_launch = astra_launch = IncludeLaunchDescription(
+        AnyLaunchDescriptionSource(
+            PathJoinSubstitution([
+                FindPackageShare("astra_camera"),
+                "launch",
+                "astra_pro.launch.xml",
+            ])
+        ),
         condition=IfCondition(use_camera_driver),
-        package="openni2_camera",
-        executable="openni2_camera_driver",
-        name="astra",
-        output="screen",
-        parameters=[
-            {"camera": "camera"},  # publishes under /camera/...
-            {"depth_registration": True},
-            {"color_depth_synchronization": True},
-        ],
     )
 
     perception_node = Node(
@@ -152,7 +150,7 @@ def generate_launch_description():
 
         robot_state_publisher,
         joint_state_publisher_gui_node,
-        camera_node,
+        astra_launch,
         perception_node,
         rviz_node,
     ])

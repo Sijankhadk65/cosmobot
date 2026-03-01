@@ -17,6 +17,13 @@
       </joint>
     </xacro:if>
 
+    <link name="camera_link"/>
+    <joint name="base_to_camera_link" type="fixed">
+      <parent link="base"/>
+      <child link="camera_link"/>
+      <origin xyz="0.3 0.3 0.3" rpy="0 0 0"/>
+    </joint>
+
     <!-- Include the robot arm definition -->
     <xacro:include filename="$(find so_arm_description)/urdf/mech/so101_arm.urdf.xacro"/>
 
