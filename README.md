@@ -24,3 +24,6 @@
 
 ### Generating rviz config
 Just save a config by only running 'rviz2' adding a 'tf' with the target frame as 'base'
+
+### Make Perception Nodes executable
+> > chmod +x /workspace/robot_ws/src/robot_perception/robot_perception/*.py

@@ -62,8 +62,6 @@ def generate_launch_description():
         description="Start perception pipeline"
     )
 
-    # ---- robot_description from SO-101 xacro ----
-    # IMPORTANT: Your provided xacros reference $(find so_arm_description),
     # so your package should be named "so_arm_description".
     xacro_file = PathJoinSubstitution([
         FindPackageShare("so_arm_description"),
