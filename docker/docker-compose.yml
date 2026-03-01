@@ -8,7 +8,7 @@ services:
       dockerfile: docker/Dockerfile
     image: my_robot_jazzy:dev
     container_name: my_robot_ros
-
+    privileged: true
     environment:
       - DISPLAY=${DISPLAY}
       - QT_X11_NO_MITSHM=1
@@ -18,6 +18,10 @@ services:
     volumes:
       - ..:/workspace:rw
       - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      - /dev/bus/usb:/dev/bus/usb:rw
+
+    device_cgroup_rules:
+      - 'c 189:* rmw'
 
     # For Intel/AMD GPU acceleration using Mesa (common on Linux)
     devices:
@@ -26,6 +30,7 @@ services:
     group_add:
       - video
       - dialout
+      - plugdev
 
     stdin_open: true
     tty: true

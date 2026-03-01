@@ -92,10 +92,15 @@ def generate_launch_description():
     # ---- Optional runtime nodes (placeholders for now) ----
     camera_node = Node(
         condition=IfCondition(use_camera_driver),
-        package="robot_astra_driver",   # replace with your real camera driver package
-        executable="camera_node",       # replace with your real executable
-        name="camera",
+        package="openni2_camera",
+        executable="openni2_camera_driver",
+        name="astra",
         output="screen",
+        parameters=[
+            {"camera": "camera"},  # publishes under /camera/...
+            {"depth_registration": True},
+            {"color_depth_synchronization": True},
+        ],
     )
 
     perception_node = Node(

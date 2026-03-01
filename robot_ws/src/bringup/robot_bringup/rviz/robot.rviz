@@ -6,6 +6,9 @@ Panels:
       Expanded:
         - /Global Options1
         - /Status1
+        - /TF1
+        - /TF1/Frames1
+        - /RobotModel1
       Splitter Ratio: 0.5
     Tree Height: 562
   - Class: rviz_common/Selection
@@ -53,16 +56,105 @@ Visualization Manager:
       Filter (whitelist): ""
       Frame Timeout: 15
       Frames:
-        All Enabled: true
+        All Enabled: false
+        base:
+          Value: true
+        gripper:
+          Value: false
+        jaw:
+          Value: false
+        lower_arm:
+          Value: false
+        shoulder:
+          Value: false
+        upper_arm:
+          Value: false
+        world:
+          Value: false
+        wrist:
+          Value: false
       Marker Scale: 1
       Name: TF
       Show Arrows: true
       Show Axes: true
       Show Names: false
       Tree:
-        {}
+        world:
+          base:
+            shoulder:
+              upper_arm:
+                lower_arm:
+                  wrist:
+                    gripper:
+                      jaw:
+                        {}
       Update Interval: 0
       Value: true
+    - Alpha: 1
+      Class: rviz_default_plugins/RobotModel
+      Collision Enabled: false
+      Description File: ""
+      Description Source: Topic
+      Description Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /robot_description
+      Enabled: true
+      Links:
+        All Links Enabled: true
+        Expand Joint Details: false
+        Expand Link Details: false
+        Expand Tree: false
+        Link Tree Style: Links in Alphabetic Order
+        base:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        gripper:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        jaw:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        lower_arm:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        shoulder:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        upper_arm:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        world:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        wrist:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+      Mass Properties:
+        Inertia: false
+        Mass: false
+      Name: RobotModel
+      TF Prefix: ""
+      Update Interval: 0
+      Value: true
+      Visual Enabled: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
@@ -109,7 +201,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz_default_plugins/Orbit
-      Distance: 10
+      Distance: 2.160550355911255
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -124,11 +216,71 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.19039806723594666
+      Pitch: 0.6553983092308044
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 0.5253976583480835
-    Saved: ~
+      Yaw: 5.781754970550537
+    Saved:
+      - Class: rviz_default_plugins/Orbit
+        Distance: 1.6050279140472412
+        Enable Stereo Rendering:
+          Stereo Eye Separation: 0.05999999865889549
+          Stereo Focal Distance: 1
+          Swap Stereo Eyes: false
+          Value: false
+        Focal Point:
+          X: 0
+          Y: 0
+          Z: 0
+        Focal Shape Fixed Size: true
+        Focal Shape Size: 0.05000000074505806
+        Invert Z Axis: false
+        Name: Orbit
+        Near Clip Distance: 0.009999999776482582
+        Pitch: 0.5103980302810669
+        Target Frame: <Fixed Frame>
+        Value: Orbit (rviz)
+        Yaw: 0.3385666310787201
+      - Class: rviz_default_plugins/Orbit
+        Distance: 3.1696245670318604
+        Enable Stereo Rendering:
+          Stereo Eye Separation: 0.05999999865889549
+          Stereo Focal Distance: 1
+          Swap Stereo Eyes: false
+          Value: false
+        Focal Point:
+          X: 0
+          Y: 0
+          Z: 0
+        Focal Shape Fixed Size: true
+        Focal Shape Size: 0.05000000074505806
+        Invert Z Axis: false
+        Name: Orbit
+        Near Clip Distance: 0.009999999776482582
+        Pitch: 0.6853982210159302
+        Target Frame: <Fixed Frame>
+        Value: Orbit (rviz)
+        Yaw: 0.9135657548904419
+      - Class: rviz_default_plugins/Orbit
+        Distance: 3.1696245670318604
+        Enable Stereo Rendering:
+          Stereo Eye Separation: 0.05999999865889549
+          Stereo Focal Distance: 1
+          Swap Stereo Eyes: false
+          Value: false
+        Focal Point:
+          X: 0
+          Y: 0
+          Z: 0
+        Focal Shape Fixed Size: true
+        Focal Shape Size: 0.05000000074505806
+        Invert Z Axis: false
+        Name: Orbit
+        Near Clip Distance: 0.009999999776482582
+        Pitch: 0.6853982210159302
+        Target Frame: <Fixed Frame>
+        Value: Orbit (rviz)
+        Yaw: 0.9135657548904419
 Window Geometry:
   Displays:
     collapsed: false
