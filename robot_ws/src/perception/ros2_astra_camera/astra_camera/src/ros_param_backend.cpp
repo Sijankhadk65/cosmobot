@@ -11,20 +11,21 @@
 /**************************************************************************/
 
 #include "astra_camera/ros_param_backend.h"
+
 namespace astra_camera {
-ParametersBackend::ParametersBackend(rclcpp::Node *node)
+
+ParametersBackend::ParametersBackend(rclcpp::Node* node)
     : node_(node), logger_(node_->get_logger()) {}
 
 ParametersBackend::~ParametersBackend() {
   if (ros_callback_) {
-    node_->remove_on_set_parameters_callback(
-        (rclcpp::node_interfaces::OnSetParametersCallbackHandle *)(ros_callback_.get()));
+    // Jazzy expects the shared_ptr handle in most setups
+    // node_->remove_on_set_parameters_callback(ros_callback_);
     ros_callback_.reset();
   }
 }
 
-void ParametersBackend::addOnSetParametersCallback(
-    rclcpp::node_interfaces::NodeParametersInterface::OnParametersSetCallbackType callback) {
+void ParametersBackend::addOnSetParametersCallback(OnSetParametersCallbackType callback) {
   ros_callback_ = node_->add_on_set_parameters_callback(std::move(callback));
 }
 

@@ -17,7 +17,7 @@
 #include <sys/wait.h>
 #include <sys/shm.h>
 #include <cerrno>
-#include <rclcpp/rclcpp.hpp>
+#include <rclcpp/rclcpp/rclcpp.hpp>
 
 #include <openni2/OpenNI.h>
 #include <mutex>

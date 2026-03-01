@@ -13,7 +13,7 @@
 #pragma once
 #include <deque>
 
-#include <rclcpp/rclcpp.hpp>
+#include <rclcpp/rclcpp/rclcpp.hpp>
 
 #include <openni2/OpenNI.h>
 #include <glog/logging.h>

@@ -11,7 +11,7 @@
 /*                                                                        */
 /**************************************************************************/
 
-#include <rclcpp/rclcpp.hpp>
+#include <rclcpp/rclcpp/rclcpp.hpp>
 #include <thread>
 
 #include "astra_camera/utils.h"

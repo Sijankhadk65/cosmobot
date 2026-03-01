@@ -15,7 +15,7 @@
 #include <optional>
 #include <atomic>
 
-#include <rclcpp/rclcpp.hpp>
+#include <rclcpp/rclcpp/rclcpp.hpp>
 #include <libuvc/libuvc.h>
 #include <image_transport/image_transport.hpp>
 #include <camera_info_manager/camera_info_manager.hpp>

@@ -31,10 +31,10 @@
 // POSSIBILITY OF SUCH DAMAGE.
 #pragma once
 
-#include <rclcpp/rclcpp.hpp>
+#include <rclcpp/rclcpp/rclcpp.hpp>
 #include <image_transport/image_transport.hpp>
 #include <sensor_msgs/image_encodings.hpp>
-#include <image_geometry/pinhole_camera_model.h>
+#include <image_geometry/image_geometry/pinhole_camera_model.hpp>
 #include <sensor_msgs/point_cloud2_iterator.hpp>
 #include <memory>
 #include "depth_traits.h"

@@ -9,7 +9,7 @@
 /* the terms of the license.                                              */
 /*                                                                        */
 /**************************************************************************/
-#include <rclcpp/rclcpp.hpp>
+#include <rclcpp/rclcpp/rclcpp.hpp>
 
 #include "astra_camera/ob_camera_node_factory.h"
 

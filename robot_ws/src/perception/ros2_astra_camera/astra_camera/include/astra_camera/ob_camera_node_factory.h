@@ -15,7 +15,7 @@
 #include <thread>
 
 
-#include <rclcpp/rclcpp.hpp>
+#include <rclcpp/rclcpp/rclcpp.hpp>
 
 #include <openni2/OpenNI.h>
 #include "dynamic_params.h"
