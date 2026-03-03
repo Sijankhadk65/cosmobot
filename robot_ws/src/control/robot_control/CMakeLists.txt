@@ -45,3 +45,16 @@ ament_target_dependencies(
   "tf2"
   "tf2_geometry_msgs"
 )
+
+add_executable(moveit_visual src/moveit_visual.cpp)
+target_include_directories(moveit_visual PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include/${PROJECT_NAME}>)
+target_compile_features(moveit_visual PUBLIC c_std_99 cxx_std_17)  # Require C99 and C++17
+ament_target_dependencies(
+  moveit_visual
+  "moveit_msgs"
+  "moveit_ros_planning_interface"
+  "moveit_visual_tools"
+  "rclcpp"
+)

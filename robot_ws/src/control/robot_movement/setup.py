@@ -1,6 +1,6 @@
 from setuptools import find_packages, setup
 
-package_name = 'robot_perception'
+package_name = 'robot_movement'
 
 setup(
     name=package_name,
@@ -24,9 +24,6 @@ setup(
     },
     entry_points={
         'console_scripts': [
-            'image_relay_node = robot_perception.node_image_relay:main',
-            'simple_processor_node = robot_perception.node_single_processor:main',
-            'color_detector = robot_perception.color_detector:main',
         ],
     },
 )
