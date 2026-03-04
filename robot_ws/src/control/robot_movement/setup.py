@@ -24,6 +24,7 @@ setup(
     },
     entry_points={
         'console_scripts': [
+            'robot_target_processor = robot_movement.robot_target_processor:main',
         ],
     },
 )
