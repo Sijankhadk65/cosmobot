@@ -7,4 +7,4 @@ cd "$ROOT_DIR"
 COMPOSE_FILE="docker/docker-compose.yml"
 SERVICE="ros"
 
-docker compose -f "$COMPOSE_FILE" build "$SERVICE"
+docker compose -f "$COMPOSE_FILE" build "$SERVICE" --no-cache

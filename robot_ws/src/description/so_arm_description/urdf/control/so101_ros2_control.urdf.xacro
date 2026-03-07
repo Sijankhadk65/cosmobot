@@ -1,143 +1,129 @@
-<?xml version="1.0" ?>
-<robot xmlns:xacro="http://wiki.ros.org/xacro">
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-  <xacro:macro name="so101_arm_ros2_control" params="name use_gazebo gazebo_control:=false">
-  <xacro:if value="${gazebo_control}">
-    <ros2_control name="So100ArmSystem" type="system">
+  <xacro:macro name="so101_arm_ros2_control" params="name use_gazebo">
+
+    <ros2_control name="${name}" type="system">
+
+      <!-- Hardware Interface Plugin -->
       <hardware>
         <xacro:if value="${use_gazebo}">
           <plugin>gz_ros2_control/GazeboSimSystem</plugin>
         </xacro:if>
+        <xacro:unless value="${use_gazebo}">
+          <!-- Replace with your actual hardware interface plugin -->
+          <plugin>mock_components/GenericSystem</plugin>
+          <!-- For real hardware, use something like:
+          <plugin>so_arm_hardware/SO101HardwareInterface</plugin>
+          -->
+          <param name="state_following_offset">0.0</param>
+        </xacro:unless>
       </hardware>
 
+      <!-- Joint 1: Base Rotation -->
       <joint name="Rotation">
         <command_interface name="position">
-          <param name="min">-3.14</param>
-          <param name="max">3.14</param>
+          <param name="min">-1.91986</param>
+          <param name="max">1.91986</param>
         </command_interface>
-        <state_interface name="position"/>
-        <state_interface name="velocity"/>
-        <state_interface name="velocity"/>
-      </joint>
-
-      <joint name="Pitch">
-        <command_interface name="position">
-          <param name="min">-3.14</param>
-          <param name="max">3.14</param>
+        <command_interface name="velocity">
+          <param name="min">-10.0</param>
+          <param name="max">10.0</param>
         </command_interface>
-        <state_interface name="position"/>
-        <state_interface name="velocity"/>
-        <state_interface name="velocity"/>
-      </joint>
-
-      <joint name="Elbow">
-        <command_interface name="position">
-          <param name="min">-3.14</param>
-          <param name="max">3.14</param>
-        </command_interface>
-        <state_interface name="position"/>
-        <state_interface name="velocity"/>
-        <state_interface name="velocity"/>
-      </joint>
-
-      <joint name="Wrist_Pitch">
-        <command_interface name="position">
-          <param name="min">-3.14</param>
-          <param name="max">3.14</param>
-        </command_interface>
-        <state_interface name="position"/>
-        <state_interface name="velocity"/>
-        <state_interface name="velocity"/>
-      </joint>
-
-      <joint name="Wrist_Roll">
-        <command_interface name="position">
-          <param name="min">-3.14</param>
-          <param name="max">3.14</param>
-        </command_interface>
-        <state_interface name="position"/>
-        <state_interface name="velocity"/>
-        <state_interface name="velocity"/>
-      </joint>
-
-      <joint name="Jaw">
-        <command_interface name="position">
-          <param name="min">-0.7</param>
-          <param name="max">0.15</param>
-        </command_interface>
-        <state_interface name="position"/>
+        <state_interface name="position">
+          <param name="initial_value">0.0</param>
+        </state_interface>
         <state_interface name="velocity"/>
         <state_interface name="effort"/>
       </joint>
+
+      <!-- Joint 2: Shoulder Pitch -->
+      <joint name="Pitch">
+        <command_interface name="position">
+          <param name="min">-1.74533</param>
+          <param name="max">1.74533</param>
+        </command_interface>
+        <command_interface name="velocity">
+          <param name="min">-10.0</param>
+          <param name="max">10.0</param>
+        </command_interface>
+        <state_interface name="position">
+          <param name="initial_value">0.0</param>
+        </state_interface>
+        <state_interface name="velocity"/>
+        <state_interface name="effort"/>
+      </joint>
+
+      <!-- Joint 3: Elbow -->
+      <joint name="Elbow">
+        <command_interface name="position">
+          <param name="min">-1.74533</param>
+          <param name="max">1.5708</param>
+        </command_interface>
+        <command_interface name="velocity">
+          <param name="min">-10.0</param>
+          <param name="max">10.0</param>
+        </command_interface>
+        <state_interface name="position">
+          <param name="initial_value">0.0</param>
+        </state_interface>
+        <state_interface name="velocity"/>
+        <state_interface name="effort"/>
+      </joint>
+
+      <!-- Joint 4: Wrist Pitch -->
+      <joint name="Wrist_Pitch">
+        <command_interface name="position">
+          <param name="min">-1.65806</param>
+          <param name="max">1.65806</param>
+        </command_interface>
+        <command_interface name="velocity">
+          <param name="min">-10.0</param>
+          <param name="max">10.0</param>
+        </command_interface>
+        <state_interface name="position">
+          <param name="initial_value">0.0</param>
+        </state_interface>
+        <state_interface name="velocity"/>
+        <state_interface name="effort"/>
+      </joint>
+
+      <!-- Joint 5: Wrist Roll -->
+      <joint name="Wrist_Roll">
+        <command_interface name="position">
+          <param name="min">-2.79253</param>
+          <param name="max">2.79253</param>
+        </command_interface>
+        <command_interface name="velocity">
+          <param name="min">-10.0</param>
+          <param name="max">10.0</param>
+        </command_interface>
+        <state_interface name="position">
+          <param name="initial_value">0.0</param>
+        </state_interface>
+        <state_interface name="velocity"/>
+        <state_interface name="effort"/>
+      </joint>
+
+      <!-- Joint 6: Gripper Jaw -->
+      <joint name="Jaw">
+        <command_interface name="position">
+          <param name="min">-0.174533</param>
+          <param name="max">1.74533</param>
+        </command_interface>
+        <command_interface name="velocity">
+          <param name="min">-10.0</param>
+          <param name="max">10.0</param>
+        </command_interface>
+        <state_interface name="position">
+          <param name="initial_value">0.0</param>
+        </state_interface>
+        <state_interface name="velocity"/>
+        <state_interface name="effort"/>
+      </joint>
+
     </ros2_control>
-  </xacro:if>
-
-  <!-- Transmissions for each joint -->
-  <transmission name="Rotation_trans">
-    <type>transmission_interface/SimpleTransmission</type>
-    <joint name="Rotation">
-      <hardwareInterface>position</hardwareInterface>
-      <hardwareInterface>velocity</hardwareInterface>
-    </joint>
-    <actuator name="Rotation_motor">
-      <mechanicalReduction>1</mechanicalReduction>
-    </actuator>
-  </transmission>
-
-  <transmission name="Pitch_trans">
-    <type>transmission_interface/SimpleTransmission</type>
-    <joint name="Pitch">
-      <hardwareInterface>position</hardwareInterface>
-      <hardwareInterface>velocity</hardwareInterface>
-    </joint>
-    <actuator name="Pitch_motor">
-      <mechanicalReduction>1</mechanicalReduction>
-    </actuator>
-  </transmission>
-
-  <transmission name="Elbow_trans">
-    <type>transmission_interface/SimpleTransmission</type>
-    <joint name="Elbow">
-      <hardwareInterface>position</hardwareInterface>
-      <hardwareInterface>velocity</hardwareInterface>
-    </joint>
-    <actuator name="Elbow_motor">
-      <mechanicalReduction>1</mechanicalReduction>
-    </actuator>
-  </transmission>
-
-  <transmission name="Wrist_Pitch_trans">
-    <type>transmission_interface/SimpleTransmission</type>
-    <joint name="Wrist_Pitch">
-      <hardwareInterface>position</hardwareInterface>
-      <hardwareInterface>velocity</hardwareInterface>
-    </joint>
-    <actuator name="Wrist_Pitch_motor">
-      <mechanicalReduction>1</mechanicalReduction>
-    </actuator>
-  </transmission>
-
-  <transmission name="Wrist_Roll_trans">
-    <type>transmission_interface/SimpleTransmission</type>
-    <joint name="Wrist_Roll">
-      <hardwareInterface>position</hardwareInterface>
-      <hardwareInterface>velocity</hardwareInterface>
-    </joint>
-    <actuator name="Wrist_Roll_motor">
-      <mechanicalReduction>1</mechanicalReduction>
-    </actuator>
-  </transmission>
-
-  <transmission name="Jaw_trans">
-    <type>transmission_interface/SimpleTransmission</type>
-    <joint name="Jaw">
-      <hardwareInterface>position</hardwareInterface>
-      <hardwareInterface>velocity</hardwareInterface>
-    </joint>
-    <actuator name="Jaw_motor">
-      <mechanicalReduction>1</mechanicalReduction>
-    </actuator>
-  </transmission>
 
   </xacro:macro>
+
 </robot>

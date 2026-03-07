@@ -29,14 +29,15 @@ RUN set -eux; \
   ; \
   rm -rf /var/lib/apt/lists/*
 
-# Gazebo (modern "GZ") integration for ROS 2 Jazzy
-# These packages provide ros-gz bridge + simulator integration.
+# Gazebo Harmonic + ROS 2 Jazzy integration
 RUN set -eux; \
   apt-get update; \
   apt-get install -y --no-install-recommends \
   ros-jazzy-ros-gz \
   ros-jazzy-ros-gz-sim \
   ros-jazzy-ros-gz-bridge \
+  ros-jazzy-ros-gz-interfaces \
+  ros-jazzy-gz-ros2-control \
   ; \
   rm -rf /var/lib/apt/lists/*
 
@@ -65,8 +66,36 @@ RUN apt-get update && apt-get install -y \
   && rm -rf /var/lib/apt/lists/*
 
 RUN apt-get update && apt-get install -y \
-  ros-jazzy-moveit \
-  ros-jazzy-moveit-visual-tools \
+  ros-jazzy-cv-bridge ros-jazzy-usb-cam \
+  ros-jazzy-image-view ros-jazzy-rqt-image-view ros-jazzy-vision-opencv \
+  ros-jazzy-vision-msgs ros-jazzy-apriltag-ros ros-jazzy-perception-pcl \
+  git \
+  cmake \
+  build-essential \
+  && rm -rf /var/lib/apt/lists/*
+
+# Robot description and control packages
+RUN apt-get update && apt-get install -y --no-install-recommends \
+  ros-jazzy-robot-state-publisher ros-jazzy-xacro \
+  ros-jazzy-ros2-control ros-jazzy-ros2-controllers \
+  ros-jazzy-ros2controlcli ros-jazzy-controller-manager \
+  ros-jazzy-controller-interface ros-jazzy-hardware-interface \
+  ros-jazzy-hardware-interface-testing ros-jazzy-ros2-control-test-assets \
+  ros-jazzy-joint-state-broadcaster ros-jazzy-joint-trajectory-controller \
+  ros-jazzy-position-controllers ros-jazzy-forward-command-controller \
+  ros-jazzy-velocity-controllers ros-jazzy-effort-controllers \
+  ros-jazzy-diff-drive-controller ros-jazzy-gripper-controllers \
+  ros-jazzy-imu-sensor-broadcaster ros-jazzy-force-torque-sensor-broadcaster \
+  ros-jazzy-control-msgs ros-jazzy-realtime-tools \
+  && rm -rf /var/lib/apt/lists/*
+
+RUN apt-get update && apt-get install -y \
+  ros-jazzy-moveit ros-jazzy-moveit-setup-assistant ros-jazzy-moveit-configs-utils \
+  ros-jazzy-moveit-ros-visualization ros-jazzy-moveit-visual-tools \
+  ros-jazzy-moveit-ros-planning-interface ros-jazzy-moveit-py \
+  ros-jazzy-moveit-ros-perception ros-jazzy-moveit-ros-move-group \
+  ros-jazzy-moveit-kinematics ros-jazzy-moveit-planners-ompl \
+  ros-jazzy-moveit-simple-controller-manager \
   git \
   cmake \
   build-essential \

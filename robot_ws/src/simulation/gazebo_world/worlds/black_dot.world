@@ -1,0 +1,158 @@
+<?xml version="1.0" ?>
+<sdf version="1.7">
+  <world name="default">
+
+    <!-- Plugin for simulating physics -->
+    <plugin
+      filename="gz-sim-physics-system"
+      name="gz::sim::systems::Physics">
+    </plugin>
+
+    <!-- Plugin for handling user commands -->
+    <plugin
+      filename="gz-sim-user-commands-system"
+      name="gz::sim::systems::UserCommands">
+    </plugin>
+
+    <!-- Plugin for broadcasting scene updates -->
+    <plugin
+      filename="gz-sim-scene-broadcaster-system"
+      name="gz::sim::systems::SceneBroadcaster">
+    </plugin>
+
+    <!-- Plugin for sensor handling -->
+    <plugin
+      filename="gz-sim-sensors-system"
+      name="gz::sim::systems::Sensors">
+      <render_engine>ogre2</render_engine>
+    </plugin>
+
+    <!-- To add realistic gravity, do: 0.0 0.0 -9.8, otherwise do 0.0 0.0 0.0 -->
+    <gravity>0.0 0.0 -9.8</gravity>
+
+    <!-- Include a model of the Sun from an external URI -->
+    <include>
+      <uri>
+        https://fuel.gazebosim.org/1.0/OpenRobotics/models/Sun
+      </uri>
+    </include>
+
+    <!-- Include a model of the Ground Plane from an external URI -->
+    <include>
+      <uri>
+        https://fuel.gazebosim.org/1.0/OpenRobotics/models/Ground Plane
+      </uri>
+    </include>
+
+    <!-- Include the cylinder model -->
+    <model name="wood_cube_5cm">
+      <pose>0.25 -0.25 0.0 0 0 0</pose>
+      <link name="link">
+        <pose>0 0 0.025 0 0 0</pose>
+        <inertial>
+          <mass>0.0565</mass>
+          <inertia>
+            <ixx>2.3541666666666672e-05</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>2.3541666666666672e-05</iyy>
+            <iyz>0</iyz>
+            <izz>2.3541666666666672e-05</izz>
+          </inertia>
+        </inertial>
+
+      <collision name="collision">
+        <geometry>
+          <box>
+            <size>0.05 0.05 0.0</size>
+          </box>
+        </geometry>
+        <surface>
+          <contact>
+            <!-- Red Pine coefficients for longitudinal axis of the wood
+                 according to:
+                 http://www.fpl.fs.fed.us/documnts/fplgtr/fplgtr113/ch04.pdf -->
+            <poissons_ratio>0.347</poissons_ratio>
+            <elastic_modulus>8.8e+09</elastic_modulus>
+              <!--
+              <poissons_ratio>0.495</poissons_ratio>
+              <elastic_modulus>610000.0</elastic_modulus>
+              <poissons_ratio>0.347</poissons_ratio>
+              <elastic_modulus>4400305000.0</elastic_modulus>
+              <poissons_ratio>0.347</poissons_ratio>
+              <elastic_modulus>10000000.0</elastic_modulus>
+              -->
+              <ode>
+                <kp>100000</kp>
+                <kd>1</kd>
+                <max_vel>1.0</max_vel>
+                <min_depth>0.001</min_depth>
+              </ode>
+            </contact>
+            <friction>
+              <torsional>
+                <coefficient>1.0</coefficient>
+                <use_patch_radius>0</use_patch_radius>
+                <surface_radius>0.05</surface_radius>
+              </torsional>
+            </friction>
+          </surface>
+        </collision>
+
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.05 0.05 0.0</size>
+          </box>
+        </geometry>
+        <material>
+          <script>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Gazebo/Red</name>
+          </script>
+        </material>
+        </visual>
+
+      </link>
+    </model>
+
+    <!-- Black sphere (dot) -->
+    <model name="black_dot">
+      <pose>0.0 0.0 0.05 0 0 0</pose>
+      <link name="link">
+        <inertial>
+          <mass>0.001</mass>
+          <inertia>
+            <ixx>1e-07</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>1e-07</iyy>
+            <iyz>0</iyz>
+            <izz>1e-07</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <sphere>
+              <radius>0.01</radius>
+            </sphere>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <sphere>
+              <radius>0.01</radius>
+            </sphere>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+            <specular>0 0 0 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+  </world>
+</sdf>
