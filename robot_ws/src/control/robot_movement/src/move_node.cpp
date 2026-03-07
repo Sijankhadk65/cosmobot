@@ -10,7 +10,7 @@ MoveNode::MoveNode()
   auto sub_options = rclcpp::SubscriptionOptions();
   sub_options.callback_group = callback_group_;
 
-  coords_sub_ = this->create_subscription<geometry_msgs::msg::PoseStamped>(
+  coords_sub_ = this->create_subscription<robot_interfaces::msg::TargetCoordinates>(
     "/target_pose", 10,
     std::bind(&MoveNode::callback, this, std::placeholders::_1),
     sub_options);
@@ -27,24 +27,37 @@ void MoveNode::initialize_planning(){
   RCLCPP_INFO(this->get_logger(), "Planning Group initialized");
 }
 
-void MoveNode::callback(const geometry_msgs::msg::PoseStamped::SharedPtr pose)
+void MoveNode::callback(const std::shared_ptr<robot_interfaces::msg::TargetCoordinates> target)
 {
-  if(is_moving) return;
+  {
+    std::lock_guard<std::mutex> lock(move_mutex);
+  }
+  
+  if(is_moving || target->targets.empty()) {
+    std::lock_guard<std::mutex> lock(move_mutex);
+    return;
+  }
 
   RCLCPP_INFO(
     this->get_logger(),
     "Target pose received: frame=%s x=%.3f y=%.3f z=%.3f",
-    pose->header.frame_id.c_str(),
-    pose->pose.position.x,
-    pose->pose.position.y,
-    pose->pose.position.z);
+    target->header.frame_id.c_str(),
+    target->targets[0].pose.position.x,
+    target->targets[0].pose.position.y,
+    target->targets[0].pose.position.z);
 
   is_moving = true;
 
-  if(!move(pose->pose)) return;
+  bool success = move(target->targets[0].pose);
   sleep(6000);
 
-  is_moving = false;
+  if(!success) RCLCPP_INFO(this->get_logger(),"Movement Failed");
+  
+  {
+    std::lock_guard<std::mutex> lock(move_mutex);
+    is_moving = false;
+  }
+
   rclcpp::shutdown();
 }
 

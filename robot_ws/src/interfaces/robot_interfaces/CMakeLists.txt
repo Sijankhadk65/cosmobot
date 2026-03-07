@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.8)
-project(coordinate_transformer)
+project(robot_interfaces)
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
@@ -7,22 +7,22 @@ endif()
 
 # find dependencies
 find_package(ament_cmake REQUIRED)
-find_package(rclcpp REQUIRED)
-find_package(robot_interfaces REQUIRED)
+find_package(rosidl_default_generators REQUIRED)
+find_package(std_msgs REQUIRED)
+find_package(geometry_msgs REQUIRED)
+# uncomment the following section in order to fill in
+# further dependencies manually.
+# find_package(<dependency> REQUIRED)
 
-add_executable(coordinate_transform_node
-  src/coordinate_transform_node.cpp
-  src/main.cpp
+rosidl_generate_interfaces(${PROJECT_NAME}
+  "msg/TargetCoordinate.msg"
+  "msg/TargetCoordinates.msg"
+  DEPENDENCIES std_msgs geometry_msgs
 )
 
-target_include_directories(coordinate_transform_node PUBLIC
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-  $<INSTALL_INTERFACE:include>
-)
-
-ament_target_dependencies(coordinate_transform_node
-  rclcpp
-  robot_interfaces
+ament_export_dependencies(
+  rosidl_default_runtime
+  geometry_msgs
 )
 
 if(BUILD_TESTING)
@@ -38,12 +38,3 @@ if(BUILD_TESTING)
 endif()
 
 ament_package()
-
-install(TARGETS
-  coordinate_transform_node
-  DESTINATION lib/${PROJECT_NAME}
-)
-
-install(DIRECTORY include/
-  DESTINATION include/
-)
