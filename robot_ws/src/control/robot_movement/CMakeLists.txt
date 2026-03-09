@@ -13,6 +13,7 @@ find_package(moveit_ros_planning REQUIRED)
 find_package(moveit_ros_planning_interface REQUIRED)
 find_package(moveit_msgs REQUIRED)
 find_package(std_msgs REQUIRED)
+find_package(tf2_geometry_msgs REQUIRED)
 find_package(robot_interfaces REQUIRED)
 find_package(moveit_visual_tools REQUIRED)
 # uncomment the following section in order to fill in
@@ -36,6 +37,7 @@ ament_target_dependencies(move
   "rclcpp"
   "geometry_msgs"
   "robot_interfaces"
+  "tf2_geometry_msgs"
 )
 
 install(TARGETS

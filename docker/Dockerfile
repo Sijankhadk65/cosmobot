@@ -69,6 +69,7 @@ RUN apt-get update && apt-get install -y \
   ros-jazzy-cv-bridge ros-jazzy-usb-cam \
   ros-jazzy-image-view ros-jazzy-rqt-image-view ros-jazzy-vision-opencv \
   ros-jazzy-vision-msgs ros-jazzy-apriltag-ros ros-jazzy-perception-pcl \
+  ros-jazzy-tf2-tools ros-jazzy-tf2-ros ros-jazzy-tf2-geometry-msgs ros-jazzy-tf-transformations \
   git \
   cmake \
   build-essential \
