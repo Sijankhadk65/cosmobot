@@ -1,0 +1,15 @@
+weld_controller_node:
+  ros__parameters:
+    world_frame: "world"
+    ee_frame: "gripper"
+
+    control_rate_hz: 100.0
+    travel_speed: 0.01
+    weave_width: 0.006
+    weave_frequency: 3.0
+
+    seam_start.position: [0.20, 0.00, 0.20]
+    seam_end.position:   [0.30, 0.00, 0.20]
+
+    # tool pointed downward example
+    seam_orientation_rpy: [0.0, 3.14159, 0.0]

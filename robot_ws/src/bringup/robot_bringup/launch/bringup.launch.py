@@ -5,7 +5,7 @@ from launch.substitutions import LaunchConfiguration, PathJoinSubstitution, Comm
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
 from launch.launch_description_sources import AnyLaunchDescriptionSource
-
+from launch_ros.parameter_descriptions import ParameterValue
 
 def generate_launch_description():
     # Common
@@ -69,13 +69,16 @@ def generate_launch_description():
         "so101.urdf.xacro"
     ])
 
-    robot_description = Command([
-        TextSubstitution(text="xacro "),
-        xacro_file,
-        TextSubstitution(text=" use_gazebo:="), use_gazebo,
-        TextSubstitution(text=" add_world:="), add_world,
-        TextSubstitution(text=" use_camera:="), use_camera_urdf,
-    ])
+    robot_description = ParameterValue(
+        Command([
+            TextSubstitution(text="xacro "),
+            xacro_file,
+            TextSubstitution(text=" use_gazebo:="), use_gazebo,
+            TextSubstitution(text=" add_world:="), add_world,
+            TextSubstitution(text=" use_camera:="), use_camera_urdf,
+        ]),
+        value_type=str
+    )
 
     robot_state_publisher = Node(
         package="robot_state_publisher",
